@@ -1,0 +1,94 @@
+name: Manual Diagnose
+
+on:
+  workflow_dispatch:
+    inputs:
+      diagnostic_type:
+        description: 'Type of diagnostic'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - gradle
+          - dependencies
+          - structure
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Full Diagnostic
+      if: github.event.inputs.diagnostic_type == 'full'
+      run: |
+        echo "=== Full Project Diagnostic ==="
+        echo ""
+        echo "=== Project Structure ==="
+        ls -la
+        echo ""
+        echo "=== Gradle Files ==="
+        find . -name "gradlew*" -o -name "build.gradle*" -o -name "settings.gradle*" -o -name "gradle.properties"
+        echo ""
+        echo "=== Gradle Wrapper ==="
+        ls -la gradle/wrapper/ || echo "No gradle wrapper"
+        echo ""
+        echo "=== Source Files ==="
+        find . -name "*.kt" | head -20
+        echo ""
+        echo "=== Manifest ==="
+        cat app/src/main/AndroidManifest.xml || echo "No manifest"
+
+    - name: Gradle Diagnostic
+      if: github.event.inputs.diagnostic_type == 'gradle'
+      run: |
+        echo "=== Gradle Diagnostic ==="
+        ./gradlew --version
+        echo ""
+        echo "=== Gradle Tasks ==="
+        ./gradlew tasks --all || echo "Gradle tasks failed"
+        echo ""
+        echo "=== Gradle Dependencies ==="
+        ./gradlew dependencies || echo "Gradle dependencies failed"
+
+    - name: Dependencies Diagnostic
+      if: github.event.inputs.diagnostic_type == 'dependencies'
+      run: |
+        echo "=== Dependencies Diagnostic ==="
+        ./gradlew app:dependencies || echo "Dependencies check failed"
+        echo ""
+        echo "=== Dependency Tree ==="
+        ./gradlew app:dependencyInsight || echo "Dependency insight failed"
+
+    - name: Structure Diagnostic
+      if: github.event.inputs.diagnostic_type == 'structure'
+      run: |
+        echo "=== Structure Diagnostic ==="
+        echo "=== App Module ==="
+        ls -la app/src/main/
+        echo ""
+        echo "=== Common Module ==="
+        ls -la common/src/main/ || echo "No common module"
+        echo ""
+        echo "=== Ikuu API Module ==="
+        ls -la ikuu-api/src/main/ || echo "No ikuu-api module"
+        echo ""
+        echo "=== Clash Core Module ==="
+        ls -la clash-core/src/main/ || echo "No clash-core module"
+
+    - name: Upload Diagnostic Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: diagnostic-report
+        path: |
+          diagnostic-report.txt
+        retention-days: 7
