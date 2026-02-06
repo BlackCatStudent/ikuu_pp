@@ -1,0 +1,1 @@
+# Consumer ProGuard rules for Ikuu API module
