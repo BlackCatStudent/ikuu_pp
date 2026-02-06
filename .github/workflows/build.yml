@@ -29,8 +29,24 @@ jobs:
     - name: Accept Android SDK licenses
       run: echo "y" | sdkmanager --licenses || true
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+    - name: Verify Gradle wrapper
+      run: |
+        echo "=== Verifying Gradle wrapper ==="
+        ls -la gradlew gradlew.bat || echo "Gradle wrapper scripts not found"
+        ls -la gradle/wrapper/ || echo "Gradle wrapper directory not found"
+        cat gradle/wrapper/gradle-wrapper.properties || echo "Gradle wrapper properties not found"
+
+    - name: Make gradlew executable
+      run: |
+        echo "=== Making gradlew executable ==="
+        chmod +x gradlew || echo "chmod failed"
+        ls -la gradlew
+
+    - name: Check Java version
+      run: |
+        echo "=== Java version ==="
+        java -version
+        echo "JAVA_HOME: $JAVA_HOME"
 
     - name: Cache Gradle packages
       uses: actions/cache@v3
@@ -52,8 +68,8 @@ jobs:
 
     - name: Check build output
       run: |
-        echo "Checking build output..."
-        ls -la app/build/outputs/apk/ || echo "No APK files found"
+        echo "=== Checking build output ==="
+        ls -la app/build/outputs/apk/ || echo "No APK directory found"
         find app/build/outputs -name "*.apk" -type f || echo "No APK files found"
 
     - name: Upload Debug APK
