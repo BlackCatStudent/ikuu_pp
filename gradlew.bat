@@ -44,12 +44,11 @@ echo ERROR: JAVA_HOME is not set and no 'java' command could be found in your PA
 echo.
 echo Please set the JAVA_HOME variable in your environment to match the
 echo location of your Java installation.
-
 goto fail
 
 :findJavaFromJavaHome
 set JAVA_HOME=%JAVA_HOME:"=%
-set JAVA_EXE=%JAVA_HOME%/bin/java.exe
+set JAVA_EXE=%JAVA_HOME%\bin\java.exe
 
 if exist "%JAVA_EXE%" goto execute
 
@@ -58,7 +57,6 @@ echo ERROR: JAVA_HOME is set to an invalid directory: %JAVA_HOME%
 echo.
 echo Please set the JAVA_HOME variable in your environment to match the
 echo location of your Java installation.
-
 goto fail
 
 :execute
@@ -76,6 +74,6 @@ if "%OS%"=="Windows_NT" endlocal
 
 :fail
 rem Set variable GRADLE_EXIT_CONSOLE if you need the _script_ return code instead of
-rem the _cmd.exe return code!
+rem _cmd.exe return code!
 if  not "" == "%GRADLE_EXIT_CONSOLE%" exit 1
 exit /b 1

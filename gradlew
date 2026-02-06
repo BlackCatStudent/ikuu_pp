@@ -13,7 +13,7 @@
 #
 #        ksh Gradle
 #
-#       Busybox and similar reduced shells will NOT work, because this script
+#   Busybox and similar reduced shells will NOT work, because this script
 #       requires all of these POSIX shell features:
 #         * functions;
 #         * expansions «$var», «${var}», «${var:-default}», «${var+SET}»,
@@ -23,7 +23,7 @@
 #
 #   Important for patching:
 #
-#   (2) This script targets any POSIX shell, so it avoids extensions provided
+# (2) This script targets any POSIX shell, so it avoids extensions provided
 #       by Bash, Ksh, etc; in particular arrays are avoided.
 #
 #       The "traditional" practice of packing multiple parameters into a
@@ -36,10 +36,25 @@
 #       ./gradlew
 #
 #   This script will automatically detect the location of the Gradle wrapper
-#   JAR file and the Java executable, and will invoke the appropriate
+#   JAR file and Java executable, and will invoke the appropriate
 #   command.
 #
 ##############################################################################
+
+# Attempt to set APP_HOME
+
+# Resolve links: $0 may be a link to a directory
+if [ -h "$0" ] ; then
+    APP_HOME=$(cd "$(dirname "$0")"; pwd)
+else
+    APP_HOME=$(pwd)
+fi
+
+# Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
+DEFAULT_JVM_OPTS=""
+
+# Use the maximum available, or set MAX_FD != -1 to use the default of ulimit.
+MAX_FD="maximum"
 
 # Determine the Java command to use to start the JVM.
 if [ -n "$JAVA_HOME" ] ; then
@@ -82,29 +97,7 @@ if [ "$cygwin" = "true" -o "$msys" = "true" ] ; then
     APP_HOME=`cygpath --path --mixed "$APP_HOME"`
     CLASSPATH=`cygpath --path --mixed "$CLASSPATH"`
     JAVACMD=`cygpath --path --mixed "$JAVACMD"`
-
-    # We build the pattern for arguments to be conveniently passed via the command line.
-    # For Cygwin, we need to convert paths from Windows/Cygwin format to Unix format.
-    # The command line arguments are passed as a single string, so we need to parse them.
-    # For MSYS, the conversion is similar but with different syntax.
-    if [ "$cygwin" = "true" ] ; then
-        # Convert paths from Windows/Cygwin format to Unix format
-        # This is a simplified conversion; for full compatibility, more complex logic may be needed
-        APP_HOME=$(echo "$APP_HOME" | sed 's|\\|/|g')
-        CLASSPATH=$(echo "$CLASSPATH" | sed 's|\\|/|g')
-    fi
 fi
-
-# Escape application args
-save () {
-    for i do printf %s\\n "$i" | sed "s/'/'\\\\''/g;1s/^/'/;1s/$/'/ ; done
-}
-APP_ARGS=$(save "$@")
 
 # Collect all arguments for the java command, following the shell quoting and substitution rules
 eval set -- $DEFAULT_JVM_OPTS $JAVA_OPTS $GRADLE_OPTS "\"-Dorg.gradle.appname=$APP_BASE_NAME\"" -classpath "\"$CLASSPATH\"" org.gradle.wrapper.GradleWrapperMain "$APP_ARGS"
-
-# by using the maximum available, or set MAX_FD != -1 to use that value
-MAX_FD="maximum"
-
-exec "$JAVACMD" "$@"
