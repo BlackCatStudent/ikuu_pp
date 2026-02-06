@@ -1,19 +1,17 @@
-#include <string>
+#include "clash_jni.h"
 
-namespace clash {
+void startClash(const char* configPath) {
+    logMessage("Starting Clash");
+}
 
-class ClashCore {
-public:
-    ClashCore();
-    ~ClashCore();
-    
-    bool start(const std::string& configPath);
-    void stop();
-    bool isRunning() const;
-    std::string getVersion() const;
-    
-private:
-    bool running_;
-};
+void stopClash() {
+    logMessage("Stopping Clash");
+}
 
+int isRunning() {
+    return 0;
+}
+
+const char* getVersion() {
+    return "1.0.0";
 }

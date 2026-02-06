@@ -4,15 +4,10 @@ project("clashcore")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-include_directories(
-    ${CMAKE_SOURCE_DIR}/include
-)
-
 add_library(
     clashcore
     SHARED
     src/clash_jni.cpp
-    src/clash_core.cpp
 )
 
 find_library(
