@@ -59,34 +59,37 @@ jobs:
           ${{ runner.os }}-gradle-
 
     - name: Build Debug APK
+      id: build_debug
       run: ./gradlew assembleDebug --stacktrace --info
-      continue-on-error: true
 
     - name: Build Release APK
+      id: build_release
       run: ./gradlew assembleRelease --stacktrace --info
-      continue-on-error: true
 
     - name: Check build output
+      if: always()
       run: |
         echo "=== Checking build output ==="
         ls -la app/build/outputs/apk/ || echo "No APK directory found"
         find app/build/outputs -name "*.apk" -type f || echo "No APK files found"
 
     - name: Upload Debug APK
+      if: always()
       uses: actions/upload-artifact@v4
-      if: success()
       with:
         name: app-debug
-        path: app/build/outputs/apk/debug/app-debug.apk
-        if-no-files-found: warn
+        path: app/build/outputs/apk/debug/*.apk
+        if-no-files-found: ignore
+        retention-days: 30
 
     - name: Upload Release APK
+      if: always()
       uses: actions/upload-artifact@v4
-      if: success()
       with:
         name: app-release
-        path: app/build/outputs/apk/release/app-release-unsigned.apk
-        if-no-files-found: warn
+        path: app/build/outputs/apk/release/*.apk
+        if-no-files-found: ignore
+        retention-days: 30
 
     - name: Upload build logs
       if: failure()
@@ -97,3 +100,4 @@ jobs:
           app/build/reports/
           app/build/outputs/logs/
         if-no-files-found: ignore
+        retention-days: 7
