@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = "com.ikuuvpn.app"
-    compileSdk = 34
+    compileSdk = 31
 
     defaultConfig {
         applicationId = "com.ikuuvpn.app"
-        minSdk = 26
-        targetSdk = 34
+        minSdk = 24
+        targetSdk = 31
         versionCode = 1
         versionName = "1.0.0"
 
@@ -24,11 +24,10 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            isMinifyEnabled = false
+        }
+        debug {
+            isMinifyEnabled = false
         }
     }
 
@@ -77,8 +76,8 @@ dependencies {
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
