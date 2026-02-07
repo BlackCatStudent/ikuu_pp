@@ -41,6 +41,9 @@ jobs:
         echo "=== Gradle Wrapper ==="
         ls -la gradle/wrapper/ || echo "No gradle wrapper"
 
+    - name: Make gradlew executable
+      run: chmod +x gradlew
+
     - name: Try Gradle tasks
       run: ./gradlew tasks --all || echo "Gradle tasks failed"
       continue-on-error: true
