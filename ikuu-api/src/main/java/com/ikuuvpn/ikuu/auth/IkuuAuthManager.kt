@@ -32,7 +32,7 @@ class IkuuAuthManager @Inject constructor(
         }
     }
 
-    suspend fun getUserInfo(): Result<UserInfo> {
+    suspend fun fetchUserInfo(): Result<UserInfo> {
         return try {
             val token = currentToken ?: return Result.failure(Exception("未登录"))
             val response = apiService.getUserInfo("Bearer $token")
